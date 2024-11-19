@@ -23,7 +23,7 @@ public class TicketingSystemCLI {
 
     public TicketingSystemCLI() {
         this.ticketPool = new TicketPool();
-        this.executorService = Executors.newCachedThreadPool();
+        this.executorService = Executors.newCachedThreadPool(); // Grows/shrinks pool as needed
         this.scanner = new Scanner(System.in);
         this.configuration = new Configuration();
         this.isRunning = false;

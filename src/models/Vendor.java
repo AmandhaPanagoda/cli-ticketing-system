@@ -16,7 +16,7 @@ public class Vendor implements Runnable {
     public void run() {
         try {
             while (!Thread.currentThread().isInterrupted()) {
-                ticketPool.addTickets(1);
+                ticketPool.addTickets(1, name);
                 Thread.sleep(ticketReleaseRate);
             }
         } catch (InterruptedException e) {

@@ -28,6 +28,18 @@ public class TicketPool {
         return false;
     }
 
+    public synchronized boolean addTickets(int count, String vendorName) {
+        if (tickets.size() + count <= maxTicketCapacity) {
+            for (int i = 0; i < count; i++) {
+                tickets.add(TicketId++);
+                console.println(
+                        "Ticket #" + (TicketId - 1) + " added by " + vendorName + ". Current total: " + tickets.size());
+            }
+            return true;
+        }
+        return false;
+    }
+
     public Integer removeVIPTicket(String customerName) {
         synchronized (lockObject) {
             if (!tickets.isEmpty()) {
