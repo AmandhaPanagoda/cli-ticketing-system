@@ -22,7 +22,7 @@ public class TicketPool {
             for (int i = 0; i < count; i++) {
                 tickets.add(ticketId++);
                 console.printSystem(
-                        String.format("Ticket #%d added. Current total: %d", (ticketId - 1), tickets.size()));
+                        String.format("Ticket #%d added by Admin. Current total: %d", (ticketId - 1), tickets.size()));
             }
             return true;
         }
@@ -45,7 +45,7 @@ public class TicketPool {
         synchronized (lockObject) {
             if (!tickets.isEmpty()) {
                 Integer ticket = tickets.remove(0);
-                console.printVIP(String.format("%s(VIP) : Purchased ticket #%d. Remaining tickets: %d",
+                console.printVIP(String.format("%s (VIP) : Purchased ticket #%d. Remaining tickets: %d",
                         customerName, ticket, tickets.size()));
                 return ticket;
             }
