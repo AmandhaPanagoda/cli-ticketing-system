@@ -1,20 +1,30 @@
 import javax.swing.*;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.Style;
+import javax.swing.text.StyleConstants;
+import javax.swing.text.StyledDocument;
 import java.awt.*;
 
 public class OutputConsole extends JFrame {
-    private final JTextArea textArea;
+    private final JTextPane textPane;
     private static OutputConsole instance;
+
+    private static final Color VENDOR_COLOR = new Color(46, 204, 113); // Green
+    private static final Color CUSTOMER_COLOR = new Color(52, 152, 219); // Blue
+    private static final Color VIP_COLOR = new Color(155, 89, 182); // Purple
+    private static final Color SYSTEM_COLOR = new Color(149, 165, 166); // Gray
 
     private OutputConsole() {
         setTitle("Simulation Output");
         setSize(600, 400);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        textArea = new JTextArea();
-        textArea.setEditable(false);
-        textArea.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 12));
+        textPane = new JTextPane();
+        textPane.setEditable(false);
+        textPane.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 14));
+        textPane.setBackground(new Color(30, 30, 30)); // Dark background
 
-        JScrollPane scrollPane = new JScrollPane(textArea);
+        JScrollPane scrollPane = new JScrollPane(textPane);
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 
         add(scrollPane);
@@ -28,14 +38,38 @@ public class OutputConsole extends JFrame {
         return instance;
     }
 
-    public void println(String message) {
+    public void printVendor(String message) {
+        printColored(message, VENDOR_COLOR);
+    }
+
+    public void printCustomer(String message) {
+        printColored(message, CUSTOMER_COLOR);
+    }
+
+    public void printVIP(String message) {
+        printColored(message, VIP_COLOR);
+    }
+
+    public void printSystem(String message) {
+        printColored(message, SYSTEM_COLOR);
+    }
+
+    private void printColored(String message, Color color) {
         SwingUtilities.invokeLater(() -> {
-            textArea.append(message + "\n");
-            textArea.setCaretPosition(textArea.getDocument().getLength());
+            StyledDocument doc = textPane.getStyledDocument();
+            Style style = textPane.addStyle("Color Style", null);
+            StyleConstants.setForeground(style, color);
+
+            try {
+                doc.insertString(doc.getLength(), message + "\n", style);
+                textPane.setCaretPosition(doc.getLength());
+            } catch (BadLocationException e) {
+                e.printStackTrace();
+            }
         });
     }
 
     public void clear() {
-        SwingUtilities.invokeLater(() -> textArea.setText(""));
+        SwingUtilities.invokeLater(() -> textPane.setText(""));
     }
 }
