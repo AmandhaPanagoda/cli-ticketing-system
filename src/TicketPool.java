@@ -21,7 +21,8 @@ public class TicketPool {
         if (tickets.size() + count <= maxTicketCapacity) {
             for (int i = 0; i < count; i++) {
                 tickets.add(ticketId++);
-                console.println("Ticket #" + (ticketId - 1) + " added. Current total: " + tickets.size());
+                console.printSystem(
+                        String.format("Ticket #%d added. Current total: %d", (ticketId - 1), tickets.size()));
             }
             return true;
         }
@@ -32,8 +33,8 @@ public class TicketPool {
         if (tickets.size() + count <= maxTicketCapacity) {
             for (int i = 0; i < count; i++) {
                 tickets.add(ticketId++);
-                console.println(
-                        "Ticket #" + (ticketId - 1) + " added by " + vendorName + ". Current total: " + tickets.size());
+                console.printVendor(String.format("Ticket #%d added by %s. Current total: %d",
+                        (ticketId - 1), vendorName, tickets.size()));
             }
             return true;
         }
@@ -44,8 +45,8 @@ public class TicketPool {
         synchronized (lockObject) {
             if (!tickets.isEmpty()) {
                 Integer ticket = tickets.remove(0);
-                console.println(customerName + "(VIP) : Purchased ticket #" + ticket +
-                        " Remaining tickets: " + tickets.size());
+                console.printVIP(String.format("%s(VIP) : Purchased ticket #%d. Remaining tickets: %d",
+                        customerName, ticket, tickets.size()));
                 return ticket;
             }
             return null;
@@ -62,8 +63,8 @@ public class TicketPool {
                 }
                 if (!tickets.isEmpty()) {
                     Integer ticket = tickets.remove(0);
-                    console.println(customerName + " : Purchased ticket #" + ticket +
-                            " Remaining tickets: " + tickets.size());
+                    console.printCustomer(String.format("%s : Purchased ticket #%d. Remaining tickets: %d",
+                            customerName, ticket, tickets.size()));
                     return ticket;
                 }
             }
