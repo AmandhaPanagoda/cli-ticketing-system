@@ -112,7 +112,7 @@ public class TicketingSystemCLI {
     }
 
     private void handleRemoveCommand() {
-        System.out.println("Enter type to remove (vendor/customer): ");
+        System.out.println("Enter type to remove (vendor/customer/vip): ");
         String type = scanner.nextLine().trim().toLowerCase();
 
         switch (type) {
@@ -121,6 +121,9 @@ public class TicketingSystemCLI {
                 break;
             case "customer":
                 removeCustomer();
+                break;
+            case "vip":
+                removeVIPCustomer();
                 break;
             default:
                 System.out.println("Invalid type. Please enter 'vendor' or 'customer'.");
@@ -174,6 +177,16 @@ public class TicketingSystemCLI {
             System.out.println("Customer removed. Remaining customers: " + customerTasks.size());
         } else {
             System.out.println("No customers to remove.");
+        }
+    }
+
+    private void removeVIPCustomer() {
+        if (!vipCustomerTasks.isEmpty()) {
+            Future<?> task = vipCustomerTasks.remove(vipCustomerTasks.size() - 1);
+            task.cancel(true);
+            System.out.println("VIP customer removed. Remaining VIP customers: " + vipCustomerTasks.size());
+        } else {
+            System.out.println("No VIP customers to remove.");
         }
     }
 
