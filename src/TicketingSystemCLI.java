@@ -43,7 +43,22 @@ public class TicketingSystemCLI {
     }
 
     private void configureSystem() {
-        System.out.println("--------------------- SYSTEM CONFIGURATION ---------------------");
+        String horizontalLine = "═";
+        String verticalLine = "║";
+        String topLeft = "╔";
+        String topRight = "╗";
+        String bottomLeft = "╚";
+        String bottomRight = "╝";
+
+        int boxWidth = 80;
+        String title = "SYSTEM CONFIGURATION";
+        int padding = (boxWidth - title.length() - 2) / 2;
+
+        System.out.println(topLeft + horizontalLine.repeat(boxWidth) + topRight);
+        System.out.println(verticalLine + " ".repeat(padding) + title + " ".repeat(boxWidth - padding - title.length())
+                + verticalLine);
+        System.out.println(bottomLeft + horizontalLine.repeat(boxWidth) + bottomRight);
+
         int maxTicketCapacity = getIntInput("Enter maximum ticket capacity: ");
 
         int totalTickets = getIntInput("Enter total tickets: ");
@@ -56,7 +71,7 @@ public class TicketingSystemCLI {
         int ticketReleaseRate = getIntInput("Enter ticket release rate (ms): ");
         int customerRetrievalRate = getIntInput("Enter customer retrieval rate (ms): ");
 
-        System.out.println("-------------------------------------------------------------");
+        System.out.println("-".repeat(82));
 
         configuration.configure(totalTickets, maxTicketCapacity, ticketReleaseRate, customerRetrievalRate);
         configuration.applyConfiguration(ticketPool);
