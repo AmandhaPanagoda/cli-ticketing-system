@@ -43,8 +43,8 @@ public class TicketingSystemCLI {
     }
 
     private void configureSystem() {
-        System.out.println("System Configuration");
-        int maxTicketCapacity = getIntInput("Enter max ticket capacity: ");
+        System.out.println("--------------------- SYSTEM CONFIGURATION ---------------------");
+        int maxTicketCapacity = getIntInput("Enter maximum ticket capacity: ");
 
         int totalTickets = getIntInput("Enter total tickets: ");
         while (totalTickets > maxTicketCapacity) {
@@ -55,6 +55,8 @@ public class TicketingSystemCLI {
 
         int ticketReleaseRate = getIntInput("Enter ticket release rate (ms): ");
         int customerRetrievalRate = getIntInput("Enter customer retrieval rate (ms): ");
+
+        System.out.println("-------------------------------------------------------------");
 
         configuration.configure(totalTickets, maxTicketCapacity, ticketReleaseRate, customerRetrievalRate);
         configuration.applyConfiguration(ticketPool);
@@ -188,7 +190,7 @@ public class TicketingSystemCLI {
             int vendorCount = getIntInput("Enter number of vendors: ");
             int customerCount = getIntInput("Enter number of customers: ");
             int vipCustomerCount = getIntInput("Enter number of VIP customers: ");
-            System.out.println("Simulation started.");
+            System.out.println("\n---------------------- SIMULATION STARTED ---------------------\n");
 
             for (int i = 0; i < vendorCount; i++) {
                 addVendor();
@@ -232,20 +234,20 @@ public class TicketingSystemCLI {
     }
 
     private void printStatus() {
-        System.out.println("\n=== System Status ===");
+        System.out.println("\n--------------------- SYSTEM STATUS ---------------------\n");
         System.out.println("Current ticket count: " + ticketPool.getTicketCount());
         System.out.println("Active vendors: " + vendorTasks.size());
         System.out.println("Active customers: " + customerTasks.size());
         System.out.println("Active VIP customers: " + vipCustomerTasks.size());
         System.out.println("System is " + (isRunning ? "running" : "stopped"));
-        System.out.println("===================\n");
+        System.out.println("\n-------------------------------------------------------------\n");
     }
 
     private void exitSimulation() {
         if (isRunning) {
             stopSimulation();
         }
-        System.out.println("Exiting simulation.");
+        System.out.println("\nExiting simulation....\n");
         scanner.close();
         outputConsole.dispose();
         System.exit(0);
@@ -259,9 +261,9 @@ public class TicketingSystemCLI {
                 if (value > 0) {
                     return value;
                 }
-                System.out.println("Please enter a positive integer.");
+                System.out.println("Please enter a positive integer.\n");
             } catch (NumberFormatException e) {
-                System.out.println("Invalid input. Please enter a valid integer.");
+                System.out.println("Invalid input. Please enter a valid integer.\n");
             }
         }
     }

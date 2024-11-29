@@ -3,10 +3,10 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class TicketPool {
+    private int ticketId = 1;
     private final List<Integer> tickets;
     private int maxTicketCapacity;
     private final Object lockObject = new Object();
-    private int TicketId = 1;
     private final OutputConsole console = OutputConsole.getInstance();
 
     public TicketPool() {
@@ -20,8 +20,8 @@ public class TicketPool {
     public synchronized boolean addTickets(int count) {
         if (tickets.size() + count <= maxTicketCapacity) {
             for (int i = 0; i < count; i++) {
-                tickets.add(TicketId++);
-                console.println("Ticket #" + (TicketId - 1) + " added. Current total: " + tickets.size());
+                tickets.add(ticketId++);
+                console.println("Ticket #" + (ticketId - 1) + " added. Current total: " + tickets.size());
             }
             return true;
         }
@@ -31,9 +31,9 @@ public class TicketPool {
     public synchronized boolean addTickets(int count, String vendorName) {
         if (tickets.size() + count <= maxTicketCapacity) {
             for (int i = 0; i < count; i++) {
-                tickets.add(TicketId++);
+                tickets.add(ticketId++);
                 console.println(
-                        "Ticket #" + (TicketId - 1) + " added by " + vendorName + ". Current total: " + tickets.size());
+                        "Ticket #" + (ticketId - 1) + " added by " + vendorName + ". Current total: " + tickets.size());
             }
             return true;
         }
@@ -45,7 +45,7 @@ public class TicketPool {
             if (!tickets.isEmpty()) {
                 Integer ticket = tickets.remove(0);
                 console.println(customerName + "(VIP) : Purchased ticket #" + ticket +
-                        "\nRemaining tickets: " + tickets.size());
+                        " Remaining tickets: " + tickets.size());
                 return ticket;
             }
             return null;
@@ -63,7 +63,7 @@ public class TicketPool {
                 if (!tickets.isEmpty()) {
                     Integer ticket = tickets.remove(0);
                     console.println(customerName + " : Purchased ticket #" + ticket +
-                            "\nRemaining tickets: " + tickets.size());
+                            " Remaining tickets: " + tickets.size());
                     return ticket;
                 }
             }
