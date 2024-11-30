@@ -43,22 +43,10 @@ public class TicketingSystemCLI {
     }
 
     private void configureSystem() {
-        String horizontalLine = "═";
-        String verticalLine = "║";
-        String topLeft = "╔";
-        String topRight = "╗";
-        String bottomLeft = "╚";
-        String bottomRight = "╝";
-
         int boxWidth = 80;
         String title = "SYSTEM CONFIGURATION";
-        int padding = (boxWidth - title.length() - 2) / 2;
 
-        System.out.println(topLeft + horizontalLine.repeat(boxWidth) + topRight);
-        System.out.println(verticalLine + " ".repeat(padding) + title + " ".repeat(boxWidth - padding - title.length())
-                + verticalLine);
-        System.out.println(bottomLeft + horizontalLine.repeat(boxWidth) + bottomRight);
-
+        printBorder(title, boxWidth);
         int maxTicketCapacity = getIntInput("Enter maximum ticket capacity: ");
 
         int totalTickets = getIntInput("Enter total tickets: ");
@@ -77,9 +65,38 @@ public class TicketingSystemCLI {
         configuration.applyConfiguration(ticketPool);
     }
 
+    private void printBorder(String title, int boxWidth) {
+        String horizontalLine = "═";
+        String verticalLine = "║";
+        String topLeft = "╔";
+        String topRight = "╗";
+        String bottomLeft = "╚";
+        String bottomRight = "╝";
+
+        int padding = (boxWidth - title.length() - 2) / 2;
+
+        System.out.println("\n" + topLeft + horizontalLine.repeat(boxWidth) + topRight);
+        System.out.println(verticalLine + " ".repeat(padding) + title + " ".repeat(boxWidth - padding - title.length())
+                + verticalLine);
+        System.out.println(bottomLeft + horizontalLine.repeat(boxWidth) + bottomRight + "\n");
+    }
+
     private void runSimulation() {
         while (true) {
-            System.out.println("\nEnter command (start, stop, status, add, remove, exit): ");
+            int boxWidth = 80;
+            String title = "MAIN MENU";
+
+            printBorder(title, boxWidth);
+            System.out.println("Enter Command:");
+            System.out.println("╔════════════════════════════════════════════════════════╗");
+            System.out.println("║  start   - Start the simulation                        ║");
+            System.out.println("║  stop    - Stop the simulation                         ║");
+            System.out.println("║  status  - Display system status                       ║");
+            System.out.println("║  add     - Add vendor/customer or VIP customer         ║");
+            System.out.println("║  remove  - Remove vendor/customer or VIP customer      ║");
+            System.out.println("║  exit    - Exit the application                        ║");
+            System.out.println("╚════════════════════════════════════════════════════════╝");
+            System.out.print("\nCommand > ");
             String command = scanner.nextLine().trim().toLowerCase();
 
             switch (command) {
@@ -108,6 +125,10 @@ public class TicketingSystemCLI {
     }
 
     private void handleAddCommand() {
+        int boxWidth = 60;
+        String title = "ADD USERS";
+
+        printBorder(title, boxWidth);
         System.out.println("Enter type to add (vendor/customer/vip): ");
         String type = scanner.nextLine().trim().toLowerCase();
 
@@ -127,6 +148,10 @@ public class TicketingSystemCLI {
     }
 
     private void handleRemoveCommand() {
+        int boxWidth = 60;
+        String title = "REMOVE USERS";
+
+        printBorder(title, boxWidth);
         System.out.println("Enter type to remove (vendor/customer/vip): ");
         String type = scanner.nextLine().trim().toLowerCase();
 
@@ -215,10 +240,15 @@ public class TicketingSystemCLI {
             customerCounter = 0;
             vipCustomerCounter = 0;
 
+            int boxWidth = 80;
+            String title = "SET UP USERS";
+
+            printBorder(title, boxWidth);
+
             int vendorCount = getIntInput("Enter number of vendors: ");
             int customerCount = getIntInput("Enter number of customers: ");
             int vipCustomerCount = getIntInput("Enter number of VIP customers: ");
-            System.out.println("\n---------------------- SIMULATION STARTED ---------------------\n");
+            System.out.println("\n------------------------- SIMULATION STARTED -------------------------\n");
 
             for (int i = 0; i < vendorCount; i++) {
                 addVendor();
@@ -262,13 +292,16 @@ public class TicketingSystemCLI {
     }
 
     private void printStatus() {
-        System.out.println("\n--------------------- SYSTEM STATUS ---------------------\n");
+        int boxWidth = 80;
+        String title = "SYSTEM STATUS";
+
+        printBorder(title, boxWidth);
         System.out.println("Current ticket count: " + ticketPool.getTicketCount());
         System.out.println("Active vendors: " + vendorTasks.size());
         System.out.println("Active customers: " + customerTasks.size());
         System.out.println("Active VIP customers: " + vipCustomerTasks.size());
         System.out.println("System is " + (isRunning ? "running" : "stopped"));
-        System.out.println("\n-------------------------------------------------------------\n");
+        System.out.println("-".repeat(82));
     }
 
     private void exitSimulation() {
