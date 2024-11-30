@@ -224,9 +224,12 @@ public class TicketingSystemCLI {
      */
     private void addVendor() {
         if (isRunning) {
-            Future<?> task = executorService.submit(new Vendor("Vendor-" + vendorCounter++, ticketPool));
+            String vendorName = "Vendor-" + ++vendorCounter;
+            Future<?> task = executorService.submit(new Vendor(vendorName, ticketPool));
             vendorTasks.add(task);
             System.out.println("New vendor added. Total vendors: " + vendorTasks.size());
+            outputConsole.printSystem(
+                    String.format("New Vendor added by Admin. Total Vendors: %d", vendorTasks.size()));
         } else {
             System.out.println("Please start the simulation first.");
         }
@@ -238,9 +241,12 @@ public class TicketingSystemCLI {
      */
     private void addCustomer() {
         if (isRunning) {
-            Future<?> task = executorService.submit(new Customer("Customer-" + customerCounter++, ticketPool));
+            String customerName = "Customer-" + ++customerCounter;
+            Future<?> task = executorService.submit(new Customer(customerName, ticketPool));
             customerTasks.add(task);
             System.out.println("New customer added. Total customers: " + customerTasks.size());
+            outputConsole.printSystem(
+                    String.format("New Customer added by Admin. Total Customers: %d", customerTasks.size()));
         } else {
             System.out.println("Please start the simulation first.");
         }
@@ -252,9 +258,12 @@ public class TicketingSystemCLI {
      */
     private void addVIPCustomer() {
         if (isRunning) {
-            Future<?> task = executorService.submit(new VIPCustomer("VIP-" + vipCustomerCounter++, ticketPool));
+            String vipCustomerName = "VIP-" + ++vipCustomerCounter;
+            Future<?> task = executorService.submit(new VIPCustomer(vipCustomerName, ticketPool));
             vipCustomerTasks.add(task);
             System.out.println("New VIP customer added. Total VIP customers: " + vipCustomerTasks.size());
+            outputConsole.printSystem(
+                    String.format("New VIP Customer added by Admin. Total VIP Customers: %d", vipCustomerTasks.size()));
         } else {
             System.out.println("Please start the simulation first.");
         }
@@ -266,9 +275,12 @@ public class TicketingSystemCLI {
      */
     private void removeVendor() {
         if (!vendorTasks.isEmpty()) {
-            Future<?> task = vendorTasks.remove(vendorTasks.size() - 1);
+            Future<?> task = vendorTasks.removeLast();
             task.cancel(true);
             System.out.println("Vendor removed. Remaining vendors: " + vendorTasks.size());
+            outputConsole.printSystem(
+                    String.format("Last Vendor removed by Admin. Remaining Vendors: %d", vendorTasks.size()));
+
         } else {
             System.out.println("No vendors to remove.");
         }
@@ -280,9 +292,11 @@ public class TicketingSystemCLI {
      */
     private void removeCustomer() {
         if (!customerTasks.isEmpty()) {
-            Future<?> task = customerTasks.remove(customerTasks.size() - 1);
+            Future<?> task = customerTasks.removeLast();
             task.cancel(true);
             System.out.println("Customer removed. Remaining customers: " + customerTasks.size());
+            outputConsole.printSystem(
+                    String.format("Last Customer removed by Admin. Remaining Customers: %d", customerTasks.size()));
         } else {
             System.out.println("No customers to remove.");
         }
@@ -294,9 +308,11 @@ public class TicketingSystemCLI {
      */
     private void removeVIPCustomer() {
         if (!vipCustomerTasks.isEmpty()) {
-            Future<?> task = vipCustomerTasks.remove(vipCustomerTasks.size() - 1);
+            Future<?> task = vipCustomerTasks.removeLast();
             task.cancel(true);
             System.out.println("VIP customer removed. Remaining VIP customers: " + vipCustomerTasks.size());
+            outputConsole.printSystem(
+                    String.format("Last VIP Customer removed by Admin. Remaining VIP Customers: %d", vipCustomerTasks.size()));
         } else {
             System.out.println("No VIP customers to remove.");
         }

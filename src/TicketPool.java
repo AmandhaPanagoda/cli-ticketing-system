@@ -52,8 +52,8 @@ public class TicketPool {
         if (tickets.size() + count <= maxTicketCapacity) {
             for (int i = 0; i < count; i++) {
                 tickets.add(ticketId++);
-                console.printVendor(String.format("Ticket #%d added by %s. Current total: %d",
-                        (ticketId - 1), vendorName, tickets.size()));
+                console.printVendor(String.format("%s : Added ticket #%d. Current total: %d",
+                        vendorName, (ticketId - 1), tickets.size()));
             }
             return true;
         }
