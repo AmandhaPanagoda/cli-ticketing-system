@@ -32,47 +32,41 @@ public class TicketPool {
      * Adds tickets to the pool through administrative action
      * Returns false if adding would exceed capacity
      */
-    public synchronized boolean addTickets(int count) {
+    public synchronized void addTickets(int count) {
         if (tickets.size() + count <= maxTicketCapacity) {
             for (int i = 0; i < count; i++) {
                 tickets.add(ticketId++);
                 console.printSystem(
                         String.format("Ticket #%d added by Admin. Current total: %d", (ticketId - 1), tickets.size()));
             }
-            return true;
         }
-        return false;
     }
 
     /**
      * Adds tickets to the pool through a specific vendor
      * Returns false if adding would exceed capacity
      */
-    public synchronized boolean addTickets(int count, String vendorName) {
+    public synchronized void addTickets(int count, String vendorName) {
         if (tickets.size() + count <= maxTicketCapacity) {
             for (int i = 0; i < count; i++) {
                 tickets.add(ticketId++);
                 console.printVendor(String.format("%s : Added ticket #%d. Current total: %d",
                         vendorName, (ticketId - 1), tickets.size()));
             }
-            return true;
         }
-        return false;
     }
 
     /**
      * Removes a ticket for a VIP customer with priority access
      * Returns null if no tickets are available
      */
-    public Integer removeVIPTicket(String customerName) {
+    public void removeVIPTicket(String customerName) {
         synchronized (lockObject) {
             if (!tickets.isEmpty()) {
-                Integer ticket = tickets.remove(0);
+                Integer ticket = tickets.removeFirst();
                 console.printVIP(String.format("%s (VIP) : Purchased ticket #%d. Remaining tickets: %d",
                         customerName, ticket, tickets.size()));
-                return ticket;
             }
-            return null;
         }
     }
 
@@ -80,7 +74,7 @@ public class TicketPool {
      * Removes a ticket for a regular customer
      * Includes a small delay and returns null if no tickets are available
      */
-    public Integer removeTicket(String customerName) {
+    public void removeTicket(String customerName) {
         synchronized (lockObject) {
             if (!tickets.isEmpty()) {
                 try {
@@ -89,13 +83,11 @@ public class TicketPool {
                     Thread.currentThread().interrupt();
                 }
                 if (!tickets.isEmpty()) {
-                    Integer ticket = tickets.remove(0);
+                    Integer ticket = tickets.removeFirst();
                     console.printCustomer(String.format("%s : Purchased ticket #%d. Remaining tickets: %d",
                             customerName, ticket, tickets.size()));
-                    return ticket;
                 }
             }
-            return null;
         }
     }
 

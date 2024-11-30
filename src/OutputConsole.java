@@ -19,7 +19,7 @@ public class OutputConsole extends JFrame {
 
     private static final Color VENDOR_COLOR = new Color(46, 204, 113); // Green
     private static final Color CUSTOMER_COLOR = new Color(52, 152, 219); // Blue
-    private static final Color VIP_COLOR = new Color(155, 89, 182); // Purple
+    private static final Color VIP_COLOR = new Color(154, 85, 184); // Purple
     private static final Color SYSTEM_COLOR = new Color(149, 165, 166); // Gray
 
     private final DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss.SSS");

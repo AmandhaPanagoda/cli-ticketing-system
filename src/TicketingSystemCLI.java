@@ -342,7 +342,7 @@ public class TicketingSystemCLI {
             int customerCount = getIntInput("Enter number of customers: ");
             int vipCustomerCount = getIntInput("Enter number of VIP customers: ");
             System.out.println("\n------------------------- SIMULATION STARTED -------------------------\n");
-
+            outputConsole.clear(); // clear the output console before the new session
             for (int i = 0; i < vendorCount; i++) {
                 addVendor();
             }
@@ -420,6 +420,7 @@ public class TicketingSystemCLI {
         }
         System.out.println("\nExiting simulation....\n");
         scanner.close();
+        outputConsole.clear();
         outputConsole.dispose();
         System.exit(0);
     }
