@@ -7,6 +7,12 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.concurrent.Future;
 
+/**
+ * Main CLI application class for the Ticketing System.
+ * Manages the simulation of ticket vendors, customers, and VIP customers
+ * interacting with a shared ticket pool. Provides a command-line interface
+ * for controlling the simulation and monitoring its status.
+ */
 public class TicketingSystemCLI {
     private final TicketPool ticketPool;
     private final ExecutorService executorService;
@@ -21,6 +27,12 @@ public class TicketingSystemCLI {
     private int vipCustomerCounter;
     private final OutputConsole outputConsole;
 
+    /**
+     * Initializes the ticketing system
+     * Sets up the thread pool, scanner, and required data structures
+     * for managing vendors and customers. Creates the output console
+     * for displaying simulation events.
+     */
     public TicketingSystemCLI() {
         this.ticketPool = new TicketPool();
         this.executorService = Executors.newCachedThreadPool(); // Grows/shrinks pool as needed
@@ -37,11 +49,25 @@ public class TicketingSystemCLI {
         this.outputConsole.setVisible(true);
     }
 
+    /**
+     * Starts the ticketing system by configuring initial parameters
+     * and launching the main simulation loop.
+     */
     public void start() {
         configureSystem();
         runSimulation();
     }
 
+    /**
+     * Prompts user for system configuration parameters including:
+     * - Maximum ticket capacity (the maximum allowed in the pool)
+     * - Initial total tickets (the initial number of tickets in the pool)
+     * - Ticket release rate (the rate at which vendors release tickets this is in
+     * miliseconds)
+     * - Customer retrieval rate (the rate at which customers retrieve tickets this
+     * is in miliseconds)
+     * Validates inputs and applies configuration to the ticket pool.
+     */
     private void configureSystem() {
         int boxWidth = 80;
         String title = "SYSTEM CONFIGURATION";
@@ -65,6 +91,12 @@ public class TicketingSystemCLI {
         configuration.applyConfiguration(ticketPool);
     }
 
+    /**
+     * Draws a formatted border box with a title for CLI output.
+     * 
+     * @param title    The text to display in the title
+     * @param boxWidth The width of the border box
+     */
     private void printBorder(String title, int boxWidth) {
         String horizontalLine = "═";
         String verticalLine = "║";
@@ -81,6 +113,14 @@ public class TicketingSystemCLI {
         System.out.println(bottomLeft + horizontalLine.repeat(boxWidth) + bottomRight + "\n");
     }
 
+    /**
+     * Main simulation loop that handles user commands.
+     * Provides options for:
+     * - Starting/stopping simulation
+     * - Adding/removing actors
+     * - Checking system status
+     * - Exiting the application
+     */
     private void runSimulation() {
         while (true) {
             int boxWidth = 80;
@@ -124,6 +164,10 @@ public class TicketingSystemCLI {
         }
     }
 
+    /**
+     * Handles the addition of new actors (vendor/customer/VIP) to the simulation.
+     * Prompts user for actor type and delegates to specific add methods.
+     */
     private void handleAddCommand() {
         int boxWidth = 50;
         String title = "ADD USERS";
@@ -147,6 +191,10 @@ public class TicketingSystemCLI {
         }
     }
 
+    /**
+     * Handles the removal of actors from the simulation.
+     * Prompts user for actor type and delegates to specific remove methods.
+     */
     private void handleRemoveCommand() {
         int boxWidth = 50;
         String title = "REMOVE USERS";
@@ -170,6 +218,10 @@ public class TicketingSystemCLI {
         }
     }
 
+    /**
+     * Adds a new vendor to the simulation if it is running.
+     * Assigns unique vendor ID and submits vendor task to executor service.
+     */
     private void addVendor() {
         if (isRunning) {
             Future<?> task = executorService.submit(new Vendor("Vendor-" + vendorCounter++, ticketPool));
@@ -180,6 +232,10 @@ public class TicketingSystemCLI {
         }
     }
 
+    /**
+     * Adds a new customer to the simulation if it is running.
+     * Assigns unique customer ID and submits customer task to executor service.
+     */
     private void addCustomer() {
         if (isRunning) {
             Future<?> task = executorService.submit(new Customer("Customer-" + customerCounter++, ticketPool));
@@ -190,6 +246,10 @@ public class TicketingSystemCLI {
         }
     }
 
+    /**
+     * Adds a new VIP customer to the simulation if it is running.
+     * Assigns unique VIP ID and submits VIP customer task to executor service.
+     */
     private void addVIPCustomer() {
         if (isRunning) {
             Future<?> task = executorService.submit(new VIPCustomer("VIP-" + vipCustomerCounter++, ticketPool));
@@ -200,6 +260,10 @@ public class TicketingSystemCLI {
         }
     }
 
+    /**
+     * Removes the most recently added vendor from the simulation.
+     * Cancels the vendor's task and updates vendor count.
+     */
     private void removeVendor() {
         if (!vendorTasks.isEmpty()) {
             Future<?> task = vendorTasks.remove(vendorTasks.size() - 1);
@@ -210,6 +274,10 @@ public class TicketingSystemCLI {
         }
     }
 
+    /**
+     * Removes the most recently added customer from the simulation.
+     * Cancels the customer's task and updates customer count.
+     */
     private void removeCustomer() {
         if (!customerTasks.isEmpty()) {
             Future<?> task = customerTasks.remove(customerTasks.size() - 1);
@@ -220,6 +288,10 @@ public class TicketingSystemCLI {
         }
     }
 
+    /**
+     * Removes the most recently added VIP customer from the simulation.
+     * Cancels the VIP customer's task and updates VIP count.
+     */
     private void removeVIPCustomer() {
         if (!vipCustomerTasks.isEmpty()) {
             Future<?> task = vipCustomerTasks.remove(vipCustomerTasks.size() - 1);
@@ -230,6 +302,11 @@ public class TicketingSystemCLI {
         }
     }
 
+    /**
+     * Initializes and starts the simulation with user-specified numbers
+     * of vendors, customers, and VIP customers. Resets all counters and
+     * clears existing tasks before starting.
+     */
     private void startSimulation() {
         if (!isRunning) {
             isRunning = true;
@@ -264,6 +341,11 @@ public class TicketingSystemCLI {
         }
     }
 
+    /**
+     * Stops the simulation by cancelling all running tasks and
+     * shutting down the executor service. Clears all task lists
+     * and resets the running state.
+     */
     private void stopSimulation() {
         if (isRunning) {
             isRunning = false;
@@ -291,6 +373,14 @@ public class TicketingSystemCLI {
         }
     }
 
+    /**
+     * Displays current system status including:
+     * - Current ticket count
+     * - Number of active vendors
+     * - Number of active customers
+     * - Number of active VIP customers
+     * - System running state
+     */
     private void printStatus() {
         int boxWidth = 80;
         String title = "SYSTEM STATUS";
@@ -304,6 +394,10 @@ public class TicketingSystemCLI {
         System.out.println("-".repeat(82));
     }
 
+    /**
+     * Safely exits the simulation by stopping all processes,
+     * closing resources, and terminating the application.
+     */
     private void exitSimulation() {
         if (isRunning) {
             stopSimulation();
@@ -314,6 +408,13 @@ public class TicketingSystemCLI {
         System.exit(0);
     }
 
+    /**
+     * Utility method to get validated integer input from user.
+     * Ensures input is a positive number.
+     * 
+     * @param prompt The message to display when requesting input
+     * @return Valid positive integer entered by user
+     */
     private int getIntInput(String prompt) {
         while (true) {
             System.out.print(prompt);
@@ -329,6 +430,12 @@ public class TicketingSystemCLI {
         }
     }
 
+    /**
+     * Application entry point. Initializes the GUI output console
+     * and starts the ticketing system CLI.
+     * 
+     * @param args Command line arguments (not used)
+     */
     public static void main(String[] args) {
         // Initialize the GUI windows
         OutputConsole outputConsole = OutputConsole.getInstance();

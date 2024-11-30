@@ -2,6 +2,11 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * Manages a thread-safe pool of tickets that can be added by vendors
+ * and purchased by customers. Controls ticket distribution and maintains
+ * capacity limits.
+ */
 public class TicketPool {
     private int ticketId = 1;
     private final List<Integer> tickets;
@@ -9,14 +14,24 @@ public class TicketPool {
     private final Object lockObject = new Object();
     private final OutputConsole console = OutputConsole.getInstance();
 
+    /**
+     * Creates a new empty ticket pool with synchronized access
+     */
     public TicketPool() {
         this.tickets = Collections.synchronizedList(new LinkedList<>());
     }
 
+    /**
+     * Updates the maximum number of tickets the pool can hold
+     */
     public synchronized void setMaxTicketCapacity(int maxTicketCapacity) {
         this.maxTicketCapacity = maxTicketCapacity;
     }
 
+    /**
+     * Adds tickets to the pool through administrative action
+     * Returns false if adding would exceed capacity
+     */
     public synchronized boolean addTickets(int count) {
         if (tickets.size() + count <= maxTicketCapacity) {
             for (int i = 0; i < count; i++) {
@@ -29,6 +44,10 @@ public class TicketPool {
         return false;
     }
 
+    /**
+     * Adds tickets to the pool through a specific vendor
+     * Returns false if adding would exceed capacity
+     */
     public synchronized boolean addTickets(int count, String vendorName) {
         if (tickets.size() + count <= maxTicketCapacity) {
             for (int i = 0; i < count; i++) {
@@ -41,6 +60,10 @@ public class TicketPool {
         return false;
     }
 
+    /**
+     * Removes a ticket for a VIP customer with priority access
+     * Returns null if no tickets are available
+     */
     public Integer removeVIPTicket(String customerName) {
         synchronized (lockObject) {
             if (!tickets.isEmpty()) {
@@ -53,6 +76,10 @@ public class TicketPool {
         }
     }
 
+    /**
+     * Removes a ticket for a regular customer
+     * Includes a small delay and returns null if no tickets are available
+     */
     public Integer removeTicket(String customerName) {
         synchronized (lockObject) {
             if (!tickets.isEmpty()) {
@@ -72,6 +99,9 @@ public class TicketPool {
         }
     }
 
+    /**
+     * Returns the current number of tickets in the pool
+     */
     public synchronized int getTicketCount() {
         return tickets.size();
     }

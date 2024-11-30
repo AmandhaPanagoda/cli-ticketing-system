@@ -7,6 +7,12 @@ import java.awt.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+/**
+ * Provides a graphical console window for displaying simulation output.
+ * Uses different colors for different types of messages (vendor, customer, VIP,
+ * system)
+ * and implements the Singleton pattern for system-wide access.
+ */
 public class OutputConsole extends JFrame {
     private final JTextPane textPane;
     private static OutputConsole instance;
@@ -18,6 +24,10 @@ public class OutputConsole extends JFrame {
 
     private final DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss.SSS");
 
+    /**
+     * Private constructor for Singleton pattern.
+     * Sets up the GUI window with a styled text pane for output.
+     */
     private OutputConsole() {
         setTitle("Simulation Output");
         setSize(800, 600);
@@ -35,6 +45,10 @@ public class OutputConsole extends JFrame {
         setLocationRelativeTo(null);
     }
 
+    /**
+     * Returns the single instance of the output console.
+     * Creates the instance if it doesn't exist (Singleton pattern).
+     */
     public static OutputConsole getInstance() {
         if (instance == null) {
             instance = new OutputConsole();
@@ -42,22 +56,37 @@ public class OutputConsole extends JFrame {
         return instance;
     }
 
+    /**
+     * Prints a vendor message in specified color
+     */
     public void printVendor(String message) {
         printColored(message, VENDOR_COLOR);
     }
 
+    /**
+     * Prints a customer message in specified color
+     */
     public void printCustomer(String message) {
         printColored(message, CUSTOMER_COLOR);
     }
 
+    /**
+     * Prints a VIP customer message in specified color
+     */
     public void printVIP(String message) {
         printColored(message, VIP_COLOR);
     }
 
+    /**
+     * Prints a system message in specified color
+     */
     public void printSystem(String message) {
         printColored(message, SYSTEM_COLOR);
     }
 
+    /**
+     * Helper method to print colored messages with timestamps.
+     */
     private void printColored(String message, Color color) {
         SwingUtilities.invokeLater(() -> {
             StyledDocument doc = textPane.getStyledDocument();
@@ -76,6 +105,9 @@ public class OutputConsole extends JFrame {
         });
     }
 
+    /**
+     * Clears all text from the console window
+     */
     public void clear() {
         SwingUtilities.invokeLater(() -> textPane.setText(""));
     }
