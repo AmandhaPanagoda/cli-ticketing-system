@@ -92,8 +92,8 @@ public class TicketingSystemCLI {
             System.out.println("║  start   - Start the simulation                        ║");
             System.out.println("║  stop    - Stop the simulation                         ║");
             System.out.println("║  status  - Display system status                       ║");
-            System.out.println("║  add     - Add vendor/customer or VIP customer         ║");
-            System.out.println("║  remove  - Remove vendor/customer or VIP customer      ║");
+            System.out.println("║  add     - Add vendor, customer or VIP customer        ║");
+            System.out.println("║  remove  - Remove vendor, customer or VIP customer     ║");
             System.out.println("║  exit    - Exit the application                        ║");
             System.out.println("╚════════════════════════════════════════════════════════╝");
             System.out.print("\nCommand > ");
@@ -125,7 +125,7 @@ public class TicketingSystemCLI {
     }
 
     private void handleAddCommand() {
-        int boxWidth = 60;
+        int boxWidth = 50;
         String title = "ADD USERS";
 
         printBorder(title, boxWidth);
@@ -148,7 +148,7 @@ public class TicketingSystemCLI {
     }
 
     private void handleRemoveCommand() {
-        int boxWidth = 60;
+        int boxWidth = 50;
         String title = "REMOVE USERS";
 
         printBorder(title, boxWidth);
@@ -240,7 +240,7 @@ public class TicketingSystemCLI {
             customerCounter = 0;
             vipCustomerCounter = 0;
 
-            int boxWidth = 80;
+            int boxWidth = 50;
             String title = "SET UP USERS";
 
             printBorder(title, boxWidth);
@@ -300,7 +300,7 @@ public class TicketingSystemCLI {
         System.out.println("Active vendors: " + vendorTasks.size());
         System.out.println("Active customers: " + customerTasks.size());
         System.out.println("Active VIP customers: " + vipCustomerTasks.size());
-        System.out.println("System is " + (isRunning ? "running" : "stopped"));
+        System.out.println("System is " + (isRunning ? "RUNNING" : "STOPPED"));
         System.out.println("-".repeat(82));
     }
 
@@ -322,9 +322,9 @@ public class TicketingSystemCLI {
                 if (value > 0) {
                     return value;
                 }
-                System.out.println("Please enter a positive integer.\n");
+                System.out.println("Please enter a number over 0.\n");
             } catch (NumberFormatException e) {
-                System.out.println("Invalid input. Please enter a valid integer.\n");
+                System.out.println("Invalid input. Please enter a number.\n");
             }
         }
     }
