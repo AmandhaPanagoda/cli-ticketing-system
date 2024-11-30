@@ -4,6 +4,8 @@ import javax.swing.text.Style;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 import java.awt.*;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class OutputConsole extends JFrame {
     private final JTextPane textPane;
@@ -13,6 +15,8 @@ public class OutputConsole extends JFrame {
     private static final Color CUSTOMER_COLOR = new Color(52, 152, 219); // Blue
     private static final Color VIP_COLOR = new Color(155, 89, 182); // Purple
     private static final Color SYSTEM_COLOR = new Color(149, 165, 166); // Gray
+
+    private final DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss.SSS");
 
     private OutputConsole() {
         setTitle("Simulation Output");
@@ -61,7 +65,10 @@ public class OutputConsole extends JFrame {
             StyleConstants.setForeground(style, color);
 
             try {
-                doc.insertString(doc.getLength(), message + "\n", style);
+                String timestamp = LocalDateTime.now().format(timeFormatter);
+                String timestampedMessage = String.format("[%s] %s", timestamp, message);
+
+                doc.insertString(doc.getLength(), timestampedMessage + "\n", style);
                 textPane.setCaretPosition(doc.getLength());
             } catch (BadLocationException e) {
                 e.printStackTrace();
